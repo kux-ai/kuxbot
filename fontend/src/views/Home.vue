@@ -62,6 +62,12 @@ export default {
 </script>
 
 <style scoped>
+.home {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+}
+
 .tabs {
   height: 50px;
   width: 100%;
@@ -92,6 +98,7 @@ export default {
   height: calc(100vh - 150px);
   box-sizing: border-box;
   padding: 15px;
+  font-size: 15px;
   overflow: auto;
   width: 100%;
 }
@@ -107,6 +114,7 @@ export default {
 }
 
 .input-area textarea {
+  font-size: 16px;
   padding: 15px;
   margin: 0px;
   box-sizing: border-box;
