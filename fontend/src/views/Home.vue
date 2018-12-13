@@ -1,7 +1,8 @@
 <template>
   <div class="home">
-    <div class="input-warp" v-if="isShowInput">
-      <textarea autofocus placeholder="快来和我聊天吧"></textarea>
+    <div class="input-area">
+      <textarea placeholder="快来和我聊聊天吧" ></textarea>
+      <button class="send-btn">发</button>
     </div>
     <div class="tabs">
       <ul>
@@ -46,10 +47,7 @@
       <div>test</div>
       <div>test</div>
     </div>
-    <div class="input-area" @click="showInput()">
-      <div class="placeholder">快来和我聊天吧</div>
-      <button class="send-btn">发</button>
-    </div>
+
   </div>
 </template>
 
@@ -58,55 +56,17 @@ export default {
   name: 'home',
   data() {
     return {
-      activeId: 1,
-      isShowInput: false
-    }
-  },
-  methods: {
-    showInput() {
-      this.isShowInput = true;
-      setTimeout(() => {
-        let inputEle = document.querySelector(".input-warp textarea");
-        inputEle.focus();
-        inputEle.select();
-      }, 200);
+      activeId: 1
     }
   }
 }
 </script>
 
 <style scoped>
-.input-warp {
-  box-sizing: border-box;
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  z-index: 1001;
-  background-color: #fff;
-  height: 40%;
-  width: 100%;
-  -webkit-box-shadow: 0 13px 32px 1px rgba(236,239,241,0.50);
-  -moz-box-shadow: 0 13px 32px 1px rgba(236,239,241,0.50);
-  box-shadow: 0 13px 32px 1px rgba(236,239,241,0.50);
-}
-
-.input-warp textarea {
-  font-size: 16px;
-  padding: 15px;
-  margin: 0px;
-  box-sizing: border-box;
-  height: 100%;
-  width: 100%;
-  appearance: none;
-  background-color: transparent;
-  border: none;
-}
-
 .home {
   position: fixed;
   width: 100vw;
   height: 100vh;
-  z-index: 1000;
 }
 
 .tabs {
@@ -148,16 +108,26 @@ export default {
   position: relative;
   height: 100px;
   width: 100%;
-  padding: 20px;
-  box-sizing: border-box;
   background-color: #f0f3f6;
   -webkit-box-shadow: 0 -13px 32px 1px rgba(236,239,241,0.50);
   -moz-box-shadow: 0 -13px 32px 1px rgba(236,239,241,0.50);
   box-shadow: 0 -13px 32px 1px rgba(236,239,241,0.50);
 }
 
-.input-area .placeholder {
-  color: gray;
+.input-area textarea {
+  font-size: 16px;
+  padding: 15px;
+  margin: 0px;
+  box-sizing: border-box;
+  height: 95px;
+  width: 100%;
+  appearance: none;
+  background-color: transparent;
+  border: none;
+}
+
+.input-area textarea:focus {
+  background-color: #fff;
 }
 
 .send-btn {
