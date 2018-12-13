@@ -1,24 +1,27 @@
 <template>
   <div class="home">
-    <div class="input-area">
-      <textarea placeholder="快来和我聊聊天吧" v-model="content"></textarea>
-      <button class="send-btn" @click="action()">发</button>
-    </div>
-    <div class="tabs">
-      <ul>
-        <li :class="{'active': activeId === 1}" @click="activeId = 1">互动</li>
-        <li :class="{'active': activeId === 2}" @click="activeId = 2">观察</li>
-      </ul>
-    </div>
-    <div class="container">
-      <div class="block" v-for="(item, idx) in log" :key="idx">
-        <div class="avatar">
-          <img :src="item.avatar" alt>
+    <div class="logo">KUX</div>
+    <div class="window">
+      <div class="input-area">
+        <textarea placeholder="快来和我聊聊天吧" v-model="content"></textarea>
+        <button class="send-btn" @click="action()">发</button>
+      </div>
+      <div class="tabs">
+        <ul>
+          <li :class="{'active': activeId === 1}" @click="activeId = 1">互动</li>
+          <li :class="{'active': activeId === 2}" @click="activeId = 2">观察</li>
+        </ul>
+      </div>
+      <div class="container">
+        <div class="block" v-for="(item, idx) in log" :key="idx">
+          <div class="avatar">
+            <img :src="item.avatar" alt>
+          </div>
+          <div class="nickname">{{item.nickname}}
+            <span class="time">{{item.time}}</span>
+          </div>
+          <div class="content">{{item.content}}</div>
         </div>
-        <div class="nickname">{{item.nickname}}
-          <span class="time">{{item.time}}</span>
-        </div>
-        <div class="content">{{item.content}}</div>
       </div>
     </div>
   </div>
@@ -55,9 +58,40 @@ export default {
 
 <style scoped>
 .home {
-  position: fixed;
   width: 100vw;
   height: 100vh;
+}
+
+.logo {
+  display: none;
+  position: fixed;
+  left: 20px;
+  top: 20px;
+  font-weight: bold;
+}
+
+@media screen and (min-width: 415px) {
+  .window {
+    position: absolute;
+    width: 375px;
+    height: 667px;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+    background-image: linear-gradient(-180deg, #ffffff 8%, #f2f2f7 97%);
+    border: 1px solid #e9eaec;
+    -webkit-box-shadow: 0 3px 4px 0 rgba(44, 71, 146, 0.32), inset 0 -2px 0 0 #e1e3e8;
+    box-shadow: 0 3px 4px 0 rgba(44, 71, 146, 0.32), inset 0 -2px 0 0 #e1e3e8;
+  }
+}
+
+
+@media screen and (min-height: 737px) {
+  .logo {
+    display: block;
+  }
 }
 
 .tabs {
