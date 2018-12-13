@@ -3,7 +3,12 @@
     <div class="logo">KUX</div>
     <div class="window">
       <div class="input-area">
-        <textarea style="resize:none" placeholder="快来和我聊聊天吧" v-model="content"></textarea>
+        <textarea
+          style="resize:none"
+          :disabled="activeId === 2"
+          placeholder="快来和我聊聊天吧"
+          v-model="content"
+        ></textarea>
         <button class="send-btn" @click="action()">发</button>
       </div>
       <div class="tabs">
@@ -12,8 +17,45 @@
           <li :class="{'active': activeId === 2}" @click="activeId = 2">观察</li>
         </ul>
       </div>
-      <div class="container">
+      <div class="container" id="chat1" v-show="activeId === 1">
         <div class="block" v-for="(item, idx) in log" :key="idx">
+          <div class="avatar">
+            <img :src="item.avatar" alt>
+          </div>
+          <div class="nickname">
+            {{item.nickname}}
+            <span class="time">{{item.time}}</span>
+          </div>
+          <div class="content">
+            <p>{{item.content}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="container" id="chat2" v-show="activeId === 2">
+        <div class="options" v-if="robotLog.length === 0">
+          <div class="title">请选择开端话题</div>
+          <ul>
+            <li>
+              <button @click="robotBegin('你是谁')">你是谁</button>
+            </li>
+            <li>
+              <button @click="robotBegin('我是谁')">我是谁</button>
+            </li>
+            <li>
+              <button @click="robotBegin('亲爱的')">亲爱的</button>
+            </li>
+            <li>
+              <button @click="robotBegin('有什么可以帮助你的')">帮助</button>
+            </li>
+            <li>
+              <button @click="robotBegin('傻逼')">傻逼</button>
+            </li>
+            <li>
+              <button @click="robotBegin('什么')">什么</button>
+            </li>
+          </ul>
+        </div>
+        <div class="block" v-for="(item, idx) in robotLog" :key="idx">
           <div class="avatar">
             <img :src="item.avatar" alt>
           </div>
@@ -38,7 +80,15 @@ import uuid from "uuid";
 const robotObj = {
   avatar:
     "http://fimage.oss-cn-shenzhen.aliyuncs.com/upload/image/20181213/1544692114530065436.png",
-  nickname: "KUXBOT"
+  nickname: "KUXBOT",
+  id: 1,
+};
+
+const robot2Obj = {
+  avatar:
+    "http://fimage.oss-cn-shenzhen.aliyuncs.com/upload/image/20181213/1544692327408065264.jpeg",
+  nickname: "机器侠",
+  id: 2
 };
 
 export default {
@@ -56,7 +106,8 @@ export default {
           time: this.getTime(),
           content: "你好朋友！"
         }
-      ]
+      ],
+      robotLog: []
     };
   },
   methods: {
@@ -90,12 +141,12 @@ export default {
       }, 200);
     },
 
-    async postData(callback) {
+    async postData(callback, content) {
       let url = "http://api.kuxbot.kux.ai/api/chat";
       let res = fly
         .post(url, {
           userId: this.userId,
-          content: this.content
+          content: content || this.content
         })
         .then(res => {
           if (typeof callback === "function") {
@@ -103,6 +154,58 @@ export default {
           }
         })
         .catch(err => {});
+    },
+
+    async robotBegin(beginContent) {
+      this.robotLog.push({
+        avatar: robotObj.avatar,
+        nickname: robotObj.nickname,
+        time: this.getTime(),
+        content: beginContent
+      });
+      this.robotLog.push({
+        avatar: robot2Obj.avatar,
+        nickname: robot2Obj.nickname,
+        time: this.getTime(),
+        content: "（正在输入...）"
+      });
+      this.toEnd();
+      setTimeout(() => {
+        this.postData(res => {
+          let contentObj = this.getRand(res.action_list);
+          setTimeout(() => {
+            this.robotLog[this.robotLog.length - 1].content = contentObj.say;
+            this.robotLog[this.robotLog.length - 1].time = this.getTime();
+            this.robotAction(1, contentObj.say);
+          }, 100);
+        }, beginContent);
+      }, 1500);
+    },
+
+    async robotAction(robotId, pervContent) {
+      let _robotObj = {};
+      if ( robotId === 1 ) {
+        _robotObj = robotObj;
+      } else {
+        _robotObj = robot2Obj;
+      }
+      this.robotLog.push({
+        avatar: _robotObj.avatar,
+        nickname: _robotObj.nickname,
+        time: this.getTime(),
+        content: "（正在输入...）"
+      });
+      this.toEnd();
+      setTimeout(() => {
+        this.postData(res => {
+          let contentObj = this.getRand(res.action_list);
+          setTimeout(() => {
+            this.robotLog[this.robotLog.length - 1].content = contentObj.say;
+            this.robotLog[this.robotLog.length - 1].time = this.getTime();
+            this.robotAction(robotId === 1 ? 2 : 1, contentObj.say);
+          }, 100);
+        }, pervContent);
+      }, 2000);
     },
 
     getRand(arr) {
@@ -115,9 +218,14 @@ export default {
     },
 
     toEnd() {
-      setTimeout(()=>{
-        let e = document.querySelector(".container");
-        e.scrollTop = e.scrollHeight;
+      setTimeout(() => {
+        if ( this.activeId === 1 ) {
+          let e = document.querySelector("#chat1");
+          e.scrollTop = e.scrollHeight;
+        } else {
+          let e = document.querySelector("#chat2");
+          e.scrollTop = e.scrollHeight;
+        }
       }, 100);
     }
   }
@@ -165,12 +273,38 @@ export default {
 }
 
 .container {
+  position: relative;
   height: calc(100vh - 150px);
   box-sizing: border-box;
   padding: 15px;
   font-size: 15px;
   overflow: auto;
   width: 100%;
+}
+
+.container .options {
+  width: 100%;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.container .options .title {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.container .options ul li {
+  padding: 10px;
+}
+
+.container .options ul li button {
+  height: 40px;
+  width: 120px;
+  font-size: 16px;
+  text-align: center;
+  border: 1px solid #a2aec3;
+  border-radius: 8px;
+  background-color: #fff;
 }
 
 .input-area {
