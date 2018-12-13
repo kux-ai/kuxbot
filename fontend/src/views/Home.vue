@@ -142,8 +142,8 @@ export default {
     },
 
     async postData(callback, content) {
-      //let url = "http://api.kuxbot.kux.ai/api/chat";
-      let url = "http://127.0.0.1:7788/api/chat";
+      let url = "http://api.kuxbot.kux.ai/api/chat";
+      //let url = "http://127.0.0.1:7788/api/chat";
       let res = fly
         .post(url, {
           userId: this.userId,
