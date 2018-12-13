@@ -66,6 +66,7 @@ export default {
   position: fixed;
   width: 100vw;
   height: 100vh;
+  z-index: 9999999;
 }
 
 .tabs {
