@@ -73,7 +73,7 @@ export default {
         this.log.push({
           avatar: robotObj.avatar,
           nickname: robotObj.nickname,
-          time: this.getTime(),
+          time: "",
           content: "（正在输入...）"
         });
         this.toEnd();
@@ -82,6 +82,7 @@ export default {
             let contentObj = this.getRand(res.action_list);
             setTimeout(() => {
               this.log[this.log.length - 1].content = contentObj.say;
+              this.log[this.log.length - 1].time = this.getTime();
             }, 100);
           });
           this.content = "";
