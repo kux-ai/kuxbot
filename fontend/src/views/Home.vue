@@ -55,7 +55,7 @@ export default {
       setTimeout(()=>{
         let e = document.querySelector(".container");
         e.scrollTop = e.scrollHeight;
-      }, 200);
+      }, 100);
     }
   }
 };
