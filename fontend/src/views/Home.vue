@@ -44,6 +44,7 @@ export default {
   },
   methods: {
     action() {
+      if ( !this.content ) return;
       this.log.push({
         avatar: "http://fimage.oss-cn-shenzhen.aliyuncs.com/upload/image/20181213/1544692327408065264.jpeg",
         nickname: "你",
@@ -51,6 +52,10 @@ export default {
         content: this.content
       });
       this.content = "";
+      setTimeout(()=>{
+        let e = document.querySelector(".container");
+        e.scrollTop = e.scrollHeight;
+      }, 200);
     }
   }
 };
