@@ -1,8 +1,8 @@
 <template>
   <div class="home">
     <div class="input-area">
-      <textarea placeholder="快来和我聊聊天吧" ></textarea>
-      <button class="send-btn">发</button>
+      <textarea placeholder="快来和我聊聊天吧" v-model="content"></textarea>
+      <button class="send-btn" @click="action()">发</button>
     </div>
     <div class="tabs">
       <ul>
@@ -11,55 +11,46 @@
       </ul>
     </div>
     <div class="container">
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
-      <div>test</div>
+      <div class="block" v-for="(item, idx) in log" :key="idx">
+        <div class="avatar">
+          <img :src="item.avatar" alt>
+        </div>
+        <div class="nickname">{{item.nickname}}
+          <span class="time">{{item.time}}</span>
+        </div>
+        <div class="content">{{item.content}}</div>
+      </div>
     </div>
-
   </div>
 </template>
 
 <script>
 export default {
-  name: 'home',
+  name: "home",
   data() {
     return {
-      activeId: 1
+      activeId: 1,
+      content: "",
+      log: [{
+        avatar: "http://fimage.oss-cn-shenzhen.aliyuncs.com/upload/image/20181213/1544692114530065436.png",
+        nickname: "KUXBOT",
+        time: "2018-10-11 11:20",
+        content: "你好朋友！"
+      }]
+    };
+  },
+  methods: {
+    action() {
+      this.log.push({
+        avatar: "http://fimage.oss-cn-shenzhen.aliyuncs.com/upload/image/20181213/1544692327408065264.jpeg",
+        nickname: "你",
+        time: "2018-10-11 11:20",
+        content: this.content
+      });
+      this.content = "";
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -109,9 +100,9 @@ export default {
   height: 100px;
   width: 100%;
   background-color: #f0f3f6;
-  -webkit-box-shadow: 0 -13px 32px 1px rgba(236,239,241,0.50);
-  -moz-box-shadow: 0 -13px 32px 1px rgba(236,239,241,0.50);
-  box-shadow: 0 -13px 32px 1px rgba(236,239,241,0.50);
+  -webkit-box-shadow: 0 -13px 32px 1px rgba(236, 239, 241, 0.5);
+  -moz-box-shadow: 0 -13px 32px 1px rgba(236, 239, 241, 0.5);
+  box-shadow: 0 -13px 32px 1px rgba(236, 239, 241, 0.5);
 }
 
 .input-area textarea {
@@ -148,5 +139,55 @@ export default {
   box-shadow: 0 2px 12px 0 rgba(44, 71, 146, 0.17);
   -webkit-transform: scale(1.07) translateY(-3px);
   transform: scale(1.07) translateY(-3px);
+}
+
+.container .block {
+  width: 100%;
+  position: relative;
+}
+
+.container .block .avatar {
+  height: 38px;
+  width: 38px;
+  position: absolute;
+  left: 0px;
+}
+
+.container .block .avatar img {
+  height: 38px;
+  width: 38px;
+  border-radius: 50%;
+}
+
+.container .block .nickname {
+  margin-left: 50px;
+  font-weight: bold;
+  color: #262b4a;
+}
+
+.container .block .nickname .time {
+  font-size: 12px;
+  color: #6c708c;
+  padding-left: 10px;
+}
+
+.container .block .content {
+  margin-left: 50px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  
+  display: inline-block;
+  background-color: hsl(0, 0%, 98%);
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  border: 1px solid #f5f5f5;
+  padding: 10px 8px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #333;
+  font-size: 14px;
+  max-width: 80%;
 }
 </style>
