@@ -11,6 +11,10 @@ a, abbr, body, cite, dd, dl, dt, h1, h2, h3, h4, h5, h6, iframe, input, li, obje
     font-family: 'Microsoft YaHei','Hiragino Sans GB','SF Pro Display',Roboto,Noto,Arial,'PingFang SC',sans-serif!important;
 }
 
+div {
+    -webkit-overflow-scrolling : touch 
+}
+
 * {
     color: #3B426B;
     font-weight: 500;
