@@ -5,7 +5,9 @@
   "private": true,
   "dependencies": {
     "egg": "^2.2.1",
-    "egg-scripts": "^2.5.0"
+    "egg-cors": "^2.1.2",
+    "egg-scripts": "^2.5.0",
+    "flyio": "^0.6.6"
   },
   "devDependencies": {
     "autod": "^3.0.1",

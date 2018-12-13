@@ -17,10 +17,13 @@
           <div class="avatar">
             <img :src="item.avatar" alt>
           </div>
-          <div class="nickname">{{item.nickname}}
+          <div class="nickname">
+            {{item.nickname}}
             <span class="time">{{item.time}}</span>
           </div>
-          <div class="content"><p>{{item.content}}</p></div>
+          <div class="content">
+            <p>{{item.content}}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -28,34 +31,88 @@
 </template>
 
 <script>
+import fly from "flyio";
+import moment from "moment";
+import uuid from "uuid";
+
+const robotObj = {
+  avatar:
+    "http://fimage.oss-cn-shenzhen.aliyuncs.com/upload/image/20181213/1544692114530065436.png",
+  nickname: "KUXBOT"
+};
+
 export default {
   name: "home",
   data() {
     return {
+      moment: moment,
       activeId: 1,
       content: "",
-      log: [{
-        avatar: "http://fimage.oss-cn-shenzhen.aliyuncs.com/upload/image/20181213/1544692114530065436.png",
-        nickname: "KUXBOT",
-        time: "2018-10-11 11:20",
-        content: "你好朋友！"
-      }]
+      userId: uuid.v4(),
+      log: [
+        {
+          avatar: robotObj.avatar,
+          nickname: robotObj.nickname,
+          time: this.getTime(),
+          content: "你好朋友！"
+        }
+      ]
     };
   },
   methods: {
-    action() {
-      if ( !this.content ) return;
-      this.log.push({
-        avatar: "http://fimage.oss-cn-shenzhen.aliyuncs.com/upload/image/20181213/1544692327408065264.jpeg",
-        nickname: "你",
-        time: "2018-10-11 11:20",
-        content: this.content
-      });
-      this.content = "";
-      setTimeout(()=>{
-        let e = document.querySelector(".container");
-        e.scrollTop = e.scrollHeight;
-      }, 100);
+    async action() {
+      if (!this.content) return;
+      setTimeout(() => {
+        this.log.push({
+          avatar:
+            "http://fimage.oss-cn-shenzhen.aliyuncs.com/upload/image/20181213/1544692327408065264.jpeg",
+          nickname: "你",
+          time: this.getTime(),
+          content: this.content
+        });
+        this.log.push({
+          avatar: robotObj.avatar,
+          nickname: robotObj.nickname,
+          time: this.getTime(),
+          content: "（正在输入...）"
+        });
+        setTimeout(() => {
+          this.postData(res => {
+            let contentObj = this.getRand(res.action_list);
+            setTimeout(() => {
+              let e = document.querySelector(".container");
+              e.scrollTop = e.scrollHeight;
+              console.log(res);
+              this.log[this.log.length - 1].content = contentObj.say;
+            }, 100);
+          });
+          this.content = "";
+        }, 500);
+      }, 200);
+    },
+
+    async postData(callback) {
+      let url = "http://127.0.0.1:7788/api/chat";
+      let res = fly
+        .post(url, {
+          userId: this.userId,
+          content: this.content
+        })
+        .then(res => {
+          if (typeof callback === "function") {
+            callback(res.data);
+          }
+        })
+        .catch(err => {});
+    },
+
+    getRand(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    },
+
+    getTime() {
+      let now = new Date().getTime();
+      return moment(now).format("HH:mm:ss");
     }
   }
 };
@@ -191,7 +248,7 @@ export default {
   margin-top: 10px;
   margin-bottom: 20px;
   font-size: 16px;
-  
+
   display: inline-block;
   background-color: hsl(0, 0%, 98%);
   -webkit-border-radius: 6px;
@@ -212,7 +269,6 @@ export default {
 }
 
 @media screen and (min-width: 415px) {
-  
   .window {
     position: absolute;
     width: 375px;
@@ -224,7 +280,8 @@ export default {
 
     background-image: linear-gradient(-180deg, #ffffff 8%, #f2f2f7 97%);
     border: 1px solid #e9eaec;
-    -webkit-box-shadow: 0 3px 4px 0 rgba(44, 71, 146, 0.32), inset 0 -2px 0 0 #e1e3e8;
+    -webkit-box-shadow: 0 3px 4px 0 rgba(44, 71, 146, 0.32),
+      inset 0 -2px 0 0 #e1e3e8;
     box-shadow: 0 3px 4px 0 rgba(44, 71, 146, 0.32), inset 0 -2px 0 0 #e1e3e8;
   }
 
@@ -232,7 +289,6 @@ export default {
     height: calc(100% - 150px);
   }
 }
-
 
 @media screen and (min-height: 737px) {
   .logo {

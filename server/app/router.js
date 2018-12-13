@@ -6,4 +6,6 @@
 module.exports = app => {
   const { router, controller } = app;
   router.get('/', controller.home.index);
+  router.post('/api/chat', controller.chat.index);
+  router.get('/api/chat', controller.chat.index);
 };

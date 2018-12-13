@@ -9,5 +9,19 @@ module.exports = appInfo => {
   // add your config here
   config.middleware = [];
 
+  //关闭csrf
+  config.security = {
+    csrf: {
+      ignore: '/api/*',
+    },
+    domainWhiteList: [
+      'http://localhost:8081',
+      'http://127.0.0.1:8081',
+      'http://127.0.0.1:8080',
+      'http://localhost:8080',
+      'http://kuxbot.kux.ai'
+    ]
+  };
+
   return config;
 };
