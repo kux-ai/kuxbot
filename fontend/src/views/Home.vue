@@ -3,7 +3,7 @@
     <div class="logo">KUX</div>
     <div class="window">
       <div class="input-area">
-        <textarea placeholder="快来和我聊聊天吧" v-model="content"></textarea>
+        <textarea style="resize:none" placeholder="快来和我聊聊天吧" v-model="content"></textarea>
         <button class="send-btn" @click="action()">发</button>
       </div>
       <div class="tabs">
