@@ -76,13 +76,11 @@ export default {
           time: this.getTime(),
           content: "（正在输入...）"
         });
+        this.toEnd();
         setTimeout(() => {
           this.postData(res => {
             let contentObj = this.getRand(res.action_list);
             setTimeout(() => {
-              let e = document.querySelector(".container");
-              e.scrollTop = e.scrollHeight;
-              console.log(res);
               this.log[this.log.length - 1].content = contentObj.say;
             }, 100);
           });
@@ -113,6 +111,13 @@ export default {
     getTime() {
       let now = new Date().getTime();
       return moment(now).format("HH:mm:ss");
+    },
+
+    toEnd() {
+      setTimeout(()=>{
+        let e = document.querySelector(".container");
+        e.scrollTop = e.scrollHeight;
+      }, 100);
     }
   }
 };
