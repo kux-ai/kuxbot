@@ -2,7 +2,7 @@
 
 const Controller = require('egg').Controller;
 const fly = require('flyio');
-fly.interceptors.request.use((config,promise)=> {
+fly.interceptors.request.use((config,promise) => {
     config.headers["Content-Type"] = "application/json; charset=UTF-8"
     return config;
 });
@@ -64,7 +64,12 @@ class ChatController extends Controller {
     }
     
     let postUrl = getPostUrl(config.access_token); 
-    let res = await fly.post(postUrl, getPostData(content, userId));
+    let res = {};
+
+    do {
+        res = await fly.post(postUrl, getPostData(content, userId));
+    } while ( !res.data.result.response_list )
+
     ctx.body = {
         code: 0,
         action_list: res.data.result.response_list[0].action_list
