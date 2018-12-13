@@ -46,7 +46,7 @@
       <div>test</div>
       <div>test</div>
     </div>
-    <div class="input-area" @click="isShowInput=true">
+    <div class="input-area" @click="showInput()">
       <div class="placeholder">快来和我聊天吧</div>
       <button class="send-btn">发</button>
     </div>
@@ -60,6 +60,16 @@ export default {
     return {
       activeId: 1,
       isShowInput: false
+    }
+  },
+  methods: {
+    showInput() {
+      this.isShowInput = true;
+      setTimeout(() => {
+        let inputEle = document.querySelector(".input-warp textarea");
+        inputEle.focus();
+        inputEle.select();
+      }, 200);
     }
   }
 }
