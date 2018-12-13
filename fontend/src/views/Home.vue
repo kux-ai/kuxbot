@@ -20,7 +20,7 @@
           <div class="nickname">{{item.nickname}}
             <span class="time">{{item.time}}</span>
           </div>
-          <div class="content">{{item.content}}</div>
+          <div class="content"><p>{{item.content}}</p></div>
         </div>
       </div>
     </div>
@@ -68,30 +68,6 @@ export default {
   left: 20px;
   top: 20px;
   font-weight: bold;
-}
-
-@media screen and (min-width: 415px) {
-  .window {
-    position: absolute;
-    width: 375px;
-    height: 667px;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-
-    background-image: linear-gradient(-180deg, #ffffff 8%, #f2f2f7 97%);
-    border: 1px solid #e9eaec;
-    -webkit-box-shadow: 0 3px 4px 0 rgba(44, 71, 146, 0.32), inset 0 -2px 0 0 #e1e3e8;
-    box-shadow: 0 3px 4px 0 rgba(44, 71, 146, 0.32), inset 0 -2px 0 0 #e1e3e8;
-  }
-}
-
-
-@media screen and (min-height: 737px) {
-  .logo {
-    display: block;
-  }
 }
 
 .tabs {
@@ -223,5 +199,39 @@ export default {
   color: #333;
   font-size: 14px;
   max-width: 80%;
+}
+
+.container .block .content p {
+  margin: 0;
+  word-wrap: break-word;
+}
+
+@media screen and (min-width: 415px) {
+  
+  .window {
+    position: absolute;
+    width: 375px;
+    height: 667px;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+    background-image: linear-gradient(-180deg, #ffffff 8%, #f2f2f7 97%);
+    border: 1px solid #e9eaec;
+    -webkit-box-shadow: 0 3px 4px 0 rgba(44, 71, 146, 0.32), inset 0 -2px 0 0 #e1e3e8;
+    box-shadow: 0 3px 4px 0 rgba(44, 71, 146, 0.32), inset 0 -2px 0 0 #e1e3e8;
+  }
+
+  .container {
+    height: calc(100% - 150px);
+  }
+}
+
+
+@media screen and (min-height: 737px) {
+  .logo {
+    display: block;
+  }
 }
 </style>
