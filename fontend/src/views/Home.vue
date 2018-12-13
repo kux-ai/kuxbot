@@ -1,5 +1,8 @@
 <template>
   <div class="home">
+    <div class="input-warp" v-if="isShowInput">
+      <textarea autofocus placeholder="快来和我聊天吧"></textarea>
+    </div>
     <div class="tabs">
       <ul>
         <li :class="{'active': activeId === 1}" @click="activeId = 1">互动</li>
@@ -43,8 +46,8 @@
       <div>test</div>
       <div>test</div>
     </div>
-    <div class="input-area">
-      <textarea placeholder="快来和我聊聊天吧" ></textarea>
+    <div class="input-area" @click="isShowInput=true">
+      <div class="placeholder">快来和我聊天吧</div>
       <button class="send-btn">发</button>
     </div>
   </div>
@@ -55,18 +58,45 @@ export default {
   name: 'home',
   data() {
     return {
-      activeId: 1
+      activeId: 1,
+      isShowInput: false
     }
   }
 }
 </script>
 
 <style scoped>
+.input-warp {
+  box-sizing: border-box;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 1001;
+  background-color: #fff;
+  height: 40%;
+  width: 100%;
+  -webkit-box-shadow: 0 13px 32px 1px rgba(236,239,241,0.50);
+  -moz-box-shadow: 0 13px 32px 1px rgba(236,239,241,0.50);
+  box-shadow: 0 13px 32px 1px rgba(236,239,241,0.50);
+}
+
+.input-warp textarea {
+  font-size: 16px;
+  padding: 15px;
+  margin: 0px;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  appearance: none;
+  background-color: transparent;
+  border: none;
+}
+
 .home {
   position: fixed;
   width: 100vw;
   height: 100vh;
-  z-index: 9999999;
+  z-index: 1000;
 }
 
 .tabs {
@@ -108,26 +138,16 @@ export default {
   position: relative;
   height: 100px;
   width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
   background-color: #f0f3f6;
   -webkit-box-shadow: 0 -13px 32px 1px rgba(236,239,241,0.50);
   -moz-box-shadow: 0 -13px 32px 1px rgba(236,239,241,0.50);
   box-shadow: 0 -13px 32px 1px rgba(236,239,241,0.50);
 }
 
-.input-area textarea {
-  font-size: 16px;
-  padding: 15px;
-  margin: 0px;
-  box-sizing: border-box;
-  height: 95px;
-  width: 100%;
-  appearance: none;
-  background-color: transparent;
-  border: none;
-}
-
-.input-area textarea:focus {
-  background-color: #fff;
+.input-area .placeholder {
+  color: gray;
 }
 
 .send-btn {
