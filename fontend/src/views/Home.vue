@@ -81,7 +81,7 @@ const robotObj = {
   avatar:
     "http://fimage.oss-cn-shenzhen.aliyuncs.com/upload/image/20181213/1544692114530065436.png",
   nickname: "KUXBOT",
-  id: 1,
+  id: 1
 };
 
 const robot2Obj = {
@@ -130,7 +130,7 @@ export default {
         this.toEnd();
         setTimeout(() => {
           this.postData(res => {
-            let contentObj = this.getRand(res.action_list);
+            let contentObj = this.getRand(res);
             setTimeout(() => {
               this.log[this.log.length - 1].content = contentObj.say;
               this.log[this.log.length - 1].time = this.getTime();
@@ -141,9 +141,10 @@ export default {
       }, 200);
     },
 
-    async postData(callback, content) {
-      let url = "http://api.kuxbot.kux.ai/api/chat";
-      //let url = "http://127.0.0.1:7788/api/chat";
+    async postData(callback, content, botType = 1) {
+      //127.0.0.1:7788  api.kuxbot.kux.ai
+      let baseURL = "http://127.0.0.1:7788/api/v1/";
+      let url = baseURL + "chat/bot" + botType;
       let res = fly
         .post(url, {
           userId: this.userId,
@@ -164,28 +165,35 @@ export default {
         time: this.getTime(),
         content: beginContent
       });
-      this.robotLog.push({
-        avatar: robot2Obj.avatar,
-        nickname: robot2Obj.nickname,
-        time: this.getTime(),
-        content: "（正在输入...）"
-      });
-      this.toEnd();
-      setTimeout(() => {
-        this.postData(res => {
-          let contentObj = this.getRand(res.action_list);
-          setTimeout(() => {
-            this.robotLog[this.robotLog.length - 1].content = contentObj.say;
-            this.robotLog[this.robotLog.length - 1].time = this.getTime();
-            this.robotAction(1, contentObj.say);
-          }, 100);
-        }, beginContent);
-      }, 1500);
+      this.robotAction(2, beginContent);
+      // this.robotLog.push({
+      //   avatar: robotObj.avatar,
+      //   nickname: robotObj.nickname,
+      //   time: this.getTime(),
+      //   content: beginContent
+      // });
+      // this.robotLog.push({
+      //   avatar: robot2Obj.avatar,
+      //   nickname: robot2Obj.nickname,
+      //   time: this.getTime(),
+      //   content: "（正在输入...）"
+      // });
+      // this.toEnd();
+      // setTimeout(() => {
+      //   this.postData(res => {
+      //     let contentObj = this.getRand(res);
+      //     setTimeout(() => {
+      //       this.robotLog[this.robotLog.length - 1].content = contentObj.say;
+      //       this.robotLog[this.robotLog.length - 1].time = this.getTime();
+      //       this.robotAction(2, contentObj.say);
+      //     }, 100);
+      //   }, beginContent);
+      // }, 1500);
     },
 
     async robotAction(robotId, pervContent) {
       let _robotObj = {};
-      if ( robotId === 1 ) {
+      if (robotId === 1) {
         _robotObj = robotObj;
       } else {
         _robotObj = robot2Obj;
@@ -199,18 +207,24 @@ export default {
       this.toEnd();
       setTimeout(() => {
         this.postData(res => {
-          let contentObj = this.getRand(res.action_list);
+          let contentObj = this.getRand(res);
           setTimeout(() => {
             this.robotLog[this.robotLog.length - 1].content = contentObj.say;
             this.robotLog[this.robotLog.length - 1].time = this.getTime();
             this.robotAction(robotId === 1 ? 2 : 1, contentObj.say);
           }, 100);
-        }, pervContent);
+        }, pervContent, robotId);
       }, 2000);
     },
 
-    getRand(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
+    getRand(res) {
+      if (res.action_list) {
+        return res.action_list[Math.floor(Math.random() * res.action_list.length)];
+      } else {
+        return {
+          say: res.data.answer
+        };
+      }
     },
 
     getTime() {
@@ -220,7 +234,7 @@ export default {
 
     toEnd() {
       setTimeout(() => {
-        if ( this.activeId === 1 ) {
+        if (this.activeId === 1) {
           let e = document.querySelector("#chat1");
           e.scrollTop = e.scrollHeight;
         } else {
