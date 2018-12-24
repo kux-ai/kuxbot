@@ -143,7 +143,7 @@ export default {
 
     async postData(callback, content, botType = 1) {
       //127.0.0.1:7788  api.kuxbot.kux.ai
-      let baseURL = "http://127.0.0.1:7788/api/v1/";
+      let baseURL = "http://api.kuxbot.kux.ai/api/v1/";
       let url = baseURL + "chat/bot" + botType;
       let res = fly
         .post(url, {
